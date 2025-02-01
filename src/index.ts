@@ -1,9 +1,22 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
 const app = express();
 
-app.get("/", (req, res) =>{
+app.get("/", (req: Request, res: Response) =>{
     res.send("Teste_Olá mundo")
+});
+
+app.get("/users", (req: Request, res: Response) => {
+    let usuarios = [{
+        nome: "Jorge",
+        idade: "17",
+    }, {
+        nome: "Bibi",
+        idade: "18",
+    }];
+
+
+    res.send (usuarios);
 });
 
 app.listen(3000, () =>{
