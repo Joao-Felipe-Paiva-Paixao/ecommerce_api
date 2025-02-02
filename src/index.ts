@@ -8,9 +8,13 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Teste_Olá mundo")
 });
 
+type User = {
+    id: number;
+    nome: string;
+    email: string;
+};
 let id = 0;
-
-let usuarios: {id: number, nome: string, email: string} [] = [];
+let usuarios: User[] = [];
 
 app.get("/users", (req: Request, res: Response) => {
     
@@ -31,6 +35,21 @@ app.post("/users", (req: Request, res: Response) => {
         message: "Usuário criado com sucesso!"
     });
 });
+
+app.put("/users/:id", (req: Request, res: Response) => {
+    let userId = Number(req.params.id);
+    let user = req.body;
+    let indexOf = usuarios.findIndex((_user: User) => _user.id === userId);
+    usuarios[indexOf].nome = user.nome;
+    usuarios[indexOf].email = user.email;
+    res.send({
+        message: "Usuário alterado com sucesso!"
+    });
+});
+
+app.delete("/users/:id"
+
+);
 
 app.listen(3000, () =>{
     console.log("Servidor ativo");
