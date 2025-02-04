@@ -6,7 +6,6 @@ type User = {
     nome: string;
     email: string;
 };
-let usuarios: User[] = [];
 
 export class UsersController {
     static async getAll(req: Request, res: Response) {
@@ -19,10 +18,13 @@ export class UsersController {
         });
         res.send(users);
     };
-    static getById(req: Request, res: Response) {
-        let userId = Number(req.params.id);
-        let user = usuarios.find(user => user.id === userId);
-        res.send(user);
+    static async getById(req: Request, res: Response) {
+        let  userId = (req.params.id);
+        const doc = await getFirestore().collection("users").doc(userId).get();
+        res.send({
+            id: doc.id,
+            ...doc.data()
+        });
     };
     static async save(req: Request, res: Response) {
         let user = req.body;
@@ -30,22 +32,25 @@ export class UsersController {
         res.send({
             message: `Usuário ${userSalvo.id} criado com sucesso!`
         });
-    }
+    };
 
     static update(req: Request, res: Response) {
-        let userId = Number(req.params.id);
-        let user = req.body;
-        let indexOf = usuarios.findIndex((_user: User) => _user.id === userId);
-        usuarios[indexOf].nome = user.nome;
-        usuarios[indexOf].email = user.email;
+        let userId = req.params.id;
+        let user = req.body as User;
+
+        getFirestore().collection("users").doc(userId).set({
+            nome: user.nome,
+            email: user.email
+        });
         res.send({
             message: "Usuário alterado com sucesso!"
         });
     };
-    static delete(req:Request, res:Response) {
-        let userId = Number(req.params.id);
-        let indexOf = usuarios.findIndex((user: User) => user.id === userId);
-        usuarios.splice(indexOf, 1);
+    static async delete(req:Request, res:Response) {
+        let userId = (req.params.id);
+
+        await getFirestore().collection("users").doc(userId).delete();
+
         res.send({
             message: "Usuário excluído com sucesso!"
         });
