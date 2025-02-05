@@ -49,7 +49,6 @@ export class UsersController {
     };
 
     static update(req: Request, res: Response, next: NextFunction) {
-        
         try {
             let userId = req.params.id;
         let user = req.body as User;
