@@ -11,6 +11,6 @@ routes(app);
 pageNotFoundHandler(app);
 errorHandler(app);
 
-app.listen(3000, () =>{
+app.listen(3000, () => {
     console.log("Servidor ativo");
 });

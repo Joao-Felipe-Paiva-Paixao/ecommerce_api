@@ -18,7 +18,8 @@ export class UsersController {
             };
         });
         res.send(users);
-    };
+    }
+
     static async getById(req: Request, res: Response, next: NextFunction) {
         let userId = (req.params.id);
         const doc = await getFirestore().collection("users").doc(userId).get();
@@ -30,14 +31,15 @@ export class UsersController {
         } else {
             throw new NotFoundError("Usuário não encontrado!")
         }
-    };
+    }
+
     static async save(req: Request, res: Response, next: NextFunction) {
         let user = req.body;
         const userSalvo = await getFirestore().collection("users").add(user);
         res.status(201).send({
             message: `Usuário ${userSalvo.id} criado com sucesso!`
         });
-    };
+    }
 
     static async update(req: Request, res: Response, next: NextFunction) {
         let userId = req.params.id;
@@ -55,7 +57,8 @@ export class UsersController {
         } else {
             throw new NotFoundError("Usuário não encontrado!")
         }
-    };
+    }
+
     static async delete(req: Request, res: Response, next: NextFunction) {
         let userId = (req.params.id);
 
