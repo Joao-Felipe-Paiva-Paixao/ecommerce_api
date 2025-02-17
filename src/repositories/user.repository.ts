@@ -1,11 +1,8 @@
 import { CollectionReference, getFirestore } from "firebase-admin/firestore";
 import { User } from "../models/user.model";
-import { NotFoundError } from "../errors/not-found.error";
-
-
 
 export class UserRepository {
-    
+
     private collection: CollectionReference;
 
     constructor() {
@@ -22,7 +19,7 @@ export class UserRepository {
         }) as User[];
     }
 
-    async getById(id: string): Promise<User> {
+    async getById(id: string): Promise<User | null> {
         const doc = await this.collection.doc(id).get();
         if (doc.exists) {
             return {
@@ -30,7 +27,7 @@ export class UserRepository {
                 ...doc.data()
             } as User;
         } else {
-            throw new NotFoundError("Usuário não encontrado!")
+            return null
         }
     }
 
@@ -38,18 +35,12 @@ export class UserRepository {
         await this.collection.add(user);
     }
 
-    async update(id: string, user: User): Promise<void> {
-        let docRef = this.collection.doc(id);
-
-        if ((await (docRef.get())).exists) {
-            await docRef.set({
-                nome: user.nome,
-                email: user.email
-            });
-
-        } else {
-            throw new NotFoundError("Usuário não encontrado!")
-        }
+    async update(user: User): Promise<void> {
+        let docRef = this.collection.doc(user.id);
+        await docRef.set({
+            nome: user.nome,
+            email: user.email
+        });
     }
 
     async delete(id: string): Promise<void> {
