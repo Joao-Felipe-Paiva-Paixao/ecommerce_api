@@ -6,7 +6,8 @@ import { errors } from "celebrate";
 
 export const errorHandler = (app: express.Express) => {
     app.use(errors());
-    app.use((error: Error,req: Request ,res: Response, next: NextFunction) => {
+    app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+        console.log(error)
         if (error instanceof ValidatonError) {
             error.send(res);
         } else if (error instanceof NotFoundError) {
