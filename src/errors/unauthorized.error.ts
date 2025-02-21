@@ -2,7 +2,7 @@ import { ErrorBase } from "./base.error";
 
 export class UnauthorizedError extends ErrorBase {
 
-    constructor(message = "E-mail ou senha incorretos") {
+    constructor(message = "Não autorizado") {
         super(401, message);
 }
 
