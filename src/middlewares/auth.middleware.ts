@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from "express"
 import { UnauthorizedError } from "../errors/unauthorized.error";
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { UserService } from "../services/user.service";
+import { ForbidenError } from "../errors/forbiden.error";
 
 
 export const auth = (app: express.Express) => {
@@ -14,7 +16,14 @@ export const auth = (app: express.Express) => {
         if (token) {
             try {
                 const decodeIdToken: DecodedIdToken = await getAuth().verifyIdToken(token, true);
-                console.log(decodeIdToken);
+                
+                const user = await new UserService().getById(decodeIdToken.uid);
+
+                if (!user) {
+                    return next(new ForbidenError());
+                }
+                req.user = user;
+
                 return next();
             } catch (error) {
                 next(new UnauthorizedError());
