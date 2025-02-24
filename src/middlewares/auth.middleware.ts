@@ -5,7 +5,11 @@ import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 
 export const auth = (app: express.Express) => {
     app.use(async (req: Request, res: Response, next: NextFunction) => {
-        const token = req.headers.authorization?.split("Bearer")[1];
+        if (req.method === "POST" && req.url.startsWith("/auth/login")) {
+            return next();
+        }
+
+        const token = req.headers.authorization?.split("Bearer ")[1];
 
         if (token) {
             try {
