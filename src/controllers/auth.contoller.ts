@@ -9,6 +9,12 @@ export class AuthController {
         const token = await userRecord.user.getIdToken(true);
         res.send({
             token: token
-        })
+        });
+    }
+
+    static async recovery(req: Request, res: Response) {
+        const { email } = req.body;
+        await new AuthService().recovery(email)
+        res.end();
     }
 }
