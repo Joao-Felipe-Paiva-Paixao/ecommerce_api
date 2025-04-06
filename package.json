@@ -1,7 +1,11 @@
 {
   "name": "ecommerce_api",
   "version": "1.0.0",
-  "main": "index.js",
+  "exports": "./lib/index.js",
+  "type": "module",
+  "engines": {
+    "node": "23"
+  },
   "scripts": {
     "start": "npx tsc-watch --onSuccess \"node --env-file=.env ./lib/index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,12 +18,13 @@
     "celebrate": "^15.0.3",
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
+    "file-type": "^20.4.1",
     "firebase": "^11.3.1",
     "firebase-admin": "^13.0.2",
     "node": "^23.8.0"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.8",
+    "@tsconfig/node23": "^23.0.1",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.0",
     "tsc-watch": "^6.2.1",

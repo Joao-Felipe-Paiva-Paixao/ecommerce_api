@@ -1,12 +1,18 @@
 import fs from "fs";
 import { getStorage, getDownloadURL } from "firebase-admin/storage";
+import { fileTypeFromBuffer } from "file-type";
+
 
 export class UploadFileService {
+
     constructor(private path: string = "") { }
     
     async upload(base64: string): Promise<string> {
         const fileBuffer = Buffer.from(base64, "base64");
-        const fileName = "image.png";
+
+        const fileType = await fileTypeFromBuffer(fileBuffer);
+
+        const fileName = `image.${fileType?.ext}`;
             
         fs.writeFileSync(fileName, fileBuffer);
 

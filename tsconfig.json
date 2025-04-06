@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
+  "extends": "@tsconfig/node23/tsconfig.json",
   "compilerOptions": {
     "module": "node16",
     "target": "es2022",
